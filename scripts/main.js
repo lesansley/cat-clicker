@@ -1,3 +1,82 @@
+$(function() {
+	var model = {
+		init: function() {
+
+		},
+
+		select: function() {
+
+		},
+
+		getAllPets: function() {
+
+		},
+
+		'cats': [
+			{
+				name: 'Bella',
+				url: 'images/bella.jpg',
+				alt: 'Bella cat',
+				counter: '0'
+			},
+			{
+				name: 'Minnie',
+				url: 'images/minnie.jpg',
+				alt: 'Minnie cat',
+				counter: '0'
+			},
+			{
+				name: 'Poppy',
+				url: 'images/poppy.jpg',
+				alt: 'Poppy cat',
+				counter: '0'
+			},
+			{
+				name: 'William',
+				url: 'images/william.jpg',
+				alt: 'William cat',
+				counter: '0'
+			},
+			{
+				name: 'Sevi',
+				url: 'images/sevi.jpg',
+				alt: 'Sevi cat',
+				counter: '0'
+			}
+		]
+	};
+
+	var octopus = {
+		selectPet: function() {
+
+		},
+		clickPet: function() {
+
+		},
+		getPets: function() {
+
+		},
+		init: function() {
+
+		}
+	};
+
+	var listView = {
+		init: function() {
+
+		},
+		render: function() {
+
+		}
+	};
+
+	var imageView = {
+		render: function() {
+
+		}
+	};
+});
+
 var pets = {
 	'cats': [
 		{
