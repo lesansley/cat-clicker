@@ -72,17 +72,17 @@ $(function() {
 			var catList = $('#cat-list');
 			var htmlListOfCats = '';
 			var petIndex = 0;
-			console.log(octopus.getAll());
 			octopus.getAll().forEach(function(cat) {
 				var catSelect = document.createElement('button');
 				catSelect.textContent = cat.name;
-				catSelect.addEventListener('click', (function(petIndex) {
+				catSelect.addEventListener('click', (function(indexCopy) {
 			        return function() {
-			            alert(petIndex);
+			            octopus.selectPet(indexCopy);
+			            alert(indexCopy);
 			        };
 			    })(petIndex));
 			    petIndex++;
-				console.log(catList);
+			    console.log(catList);
 				catList.append(catSelect);
 			});
 		}
@@ -91,18 +91,22 @@ $(function() {
 	var imageView = {
 		init: function(pet) {
 			this.container = $('#image-container');
-			this.catContainer = $('#cat-container');
-			this.catCounter = $('#cat-counter');
-			this.catName = 	$('#cat-name');
+			while (this.container.firstChild) {
+				this.container.removeChild(this.container.firstChild);
+			}
+
 			imageView.render(pet);
 		},
 		render: function(pet) {
-
+			var htmlSelectedCat = '<div><h1 id="cat-name" class="name">' + pet.name + '</h1></div><div class="cat-container"><img id="cat-image" class="image img-responsive" src="' + pet.url + '" alt=""></div><div><h2 id="cat-counter" class="click-counter">' + pet.counter + '</h2></div>';
+			console.log(htmlSelectedCat);
+			$('#image-container').append(htmlSelectedCat);
 		}
 	};
-	console.log(model.cats);
 	octopus.init();
 });
+
+
 
 /*
 var catIndex;
