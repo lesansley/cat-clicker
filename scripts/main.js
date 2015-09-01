@@ -4,12 +4,12 @@ $(function() {
 
 		},
 
-		select: function() {
-
+		select: function(index) {
+			return model.cats[index];
 		},
 
 		getAllPets: function() {
-
+			return model.cats;
 		},
 
 		'cats': [
@@ -48,15 +48,15 @@ $(function() {
 
 	var octopus = {
 		selectPet: function(index) {
-
-			imageView.init();
+			var currentPet = model.select(index);
+			imageView.init(currentPet);
 		},
 		clickPet: function() {
 
 			imageView.init();
 		},
-		getAllPets: function() {//needs to return a JSON array of cats
-
+		getAll: function() {//needs to return a JSON array of cats
+			return model.getAllPets();
 		},
 		init: function() {
 			model.init();
@@ -66,29 +66,45 @@ $(function() {
 
 	var listView = {
 		init: function() {
-			this.catList = $('#cat-list');
 			listView.render();
 		},
 		render: function() {
+			var catList = $('#cat-list');
 			var htmlListOfCats = '';
-			octopus.getAllPets().foreach(function(cat) {
-				htmlListOfCats += '<li class="cat-item" onClick="octopus.selectPet(' + cat + ')">' + cat.name + '</li>'
+			var petIndex = 0;
+			console.log(octopus.getAll());
+			octopus.getAll().forEach(function(cat) {
+				var catSelect = document.createElement('button');
+				catSelect.textContent = cat.name;
+				catSelect.addEventListener('click', (function(petIndex) {
+			        return function() {
+			            alert(petIndex);
+			        };
+			    })(petIndex));
+			    petIndex++;
+				console.log(catList);
+				catList.append(catSelect);
 			});
-			this.catList.html(htmlListOfCats);
 		}
 	};
 
 	var imageView = {
-		init: function() {
-
+		init: function(pet) {
+			this.container = $('#image-container');
+			this.catContainer = $('#cat-container');
+			this.catCounter = $('#cat-counter');
+			this.catName = 	$('#cat-name');
+			imageView.render(pet);
 		},
-		render: function() {
+		render: function(pet) {
 
-				}
+		}
 	};
+	console.log(model.cats);
+	octopus.init();
 });
 
-
+/*
 var catIndex;
 
 function loadCat(index) {
@@ -135,3 +151,4 @@ document.body.onload = function() {
 	loadList ();
 };
 
+*/
