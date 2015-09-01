@@ -47,70 +47,47 @@ $(function() {
 	};
 
 	var octopus = {
-		selectPet: function() {
+		selectPet: function(index) {
 
+			imageView.init();
 		},
 		clickPet: function() {
 
+			imageView.init();
 		},
-		getPets: function() {
+		getAllPets: function() {//needs to return a JSON array of cats
 
 		},
 		init: function() {
-
+			model.init();
+			listView.init();
 		}
 	};
 
 	var listView = {
 		init: function() {
-
+			this.catList = $('#cat-list');
+			listView.render();
 		},
 		render: function() {
-
+			var htmlListOfCats = '';
+			octopus.getAllPets().foreach(function(cat) {
+				htmlListOfCats += '<li class="cat-item" onClick="octopus.selectPet(' + cat + ')">' + cat.name + '</li>'
+			});
+			this.catList.html(htmlListOfCats);
 		}
 	};
 
 	var imageView = {
+		init: function() {
+
+		},
 		render: function() {
 
-		}
+				}
 	};
 });
 
-var pets = {
-	'cats': [
-		{
-			name: 'Bella',
-			url: 'images/bella.jpg',
-			alt: 'Bella cat',
-			counter: '0'
-		},
-		{
-			name: 'Minnie',
-			url: 'images/minnie.jpg',
-			alt: 'Minnie cat',
-			counter: '0'
-		},
-		{
-			name: 'Poppy',
-			url: 'images/poppy.jpg',
-			alt: 'Poppy cat',
-			counter: '0'
-		},
-		{
-			name: 'William',
-			url: 'images/william.jpg',
-			alt: 'William cat',
-			counter: '0'
-		},
-		{
-			name: 'Sevi',
-			url: 'images/sevi.jpg',
-			alt: 'Sevi cat',
-			counter: '0'
-		}
-	]
-};
 
 var catIndex;
 
@@ -139,7 +116,7 @@ function imageClick(index) {
 	console.log(index);
 	var counter = document.getElementById('cat-counter');
 	pets.cats[index].counter++;
-	counter.innerHTML = pets.cats[index].counter;	
+	counter.innerHTML = pets.cats[index].counter;
 }
 
 function loadList() {
