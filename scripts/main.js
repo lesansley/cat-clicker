@@ -91,16 +91,20 @@ $(function() {
 	var imageView = {
 		init: function(pet) {
 			this.container = $('#image-container');
-			while (this.container.firstChild) {
+			console.log('before removal');
+			console.log(this.container);
+			//console.log(container[0].childNodes.length);
+			while(this.container.firstChild) {
 				this.container.removeChild(this.container.firstChild);
+				console.log('during removal');
 			}
-
+			console.log('after removal')
 			imageView.render(pet);
 		},
 		render: function(pet) {
+			var container = $('#image-container');
 			var htmlSelectedCat = '<div><h1 id="cat-name" class="name">' + pet.name + '</h1></div><div class="cat-container"><img id="cat-image" class="image img-responsive" src="' + pet.url + '" alt=""></div><div><h2 id="cat-counter" class="click-counter">' + pet.counter + '</h2></div>';
-			console.log(htmlSelectedCat);
-			$('#image-container').append(htmlSelectedCat);
+			container.append(htmlSelectedCat);
 		}
 	};
 	octopus.init();
