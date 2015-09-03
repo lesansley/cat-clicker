@@ -1,81 +1,106 @@
-var pets = {
-	'cats': [
-		{
-			name: 'Bella',
-			url: 'images/bella.jpg',
-			alt: 'Bella cat',
-			counter: '0'
+$(function() {
+	var model = {
+		currentCat: null,
+		cats: [
+			{
+				name: 'Bella',
+				url: 'images/bella.jpg',
+				alt: 'Bella cat',
+				counter: '0'
+			},
+			{
+				name: 'Minnie',
+				url: 'images/minnie.jpg',
+				alt: 'Minnie cat',
+				counter: '0'
+			},
+			{
+				name: 'Poppy',
+				url: 'images/poppy.jpg',
+				alt: 'Poppy cat',
+				counter: '0'
+			},
+			{
+				name: 'William',
+				url: 'images/william.jpg',
+				alt: 'William cat',
+				counter: '0'
+			},
+			{
+				name: 'Sevi',
+				url: 'images/sevi.jpg',
+				alt: 'Sevi cat',
+				counter: '0'
+			}
+		]
+	};
+
+	var octopus = {
+		getCurrentPet: function() {
+			return model.currentCat;
 		},
-		{
-			name: 'Minnie',
-			url: 'images/minnie.jpg',
-			alt: 'Minnie cat',
-			counter: '0'
+		setCurrentPet: function(cat) {
+			model.currentCat = cat;
+			imageView.display===false ? imageView.init() : imageView.render();
+			imageView.display = true;
 		},
-		{
-			name: 'Poppy',
-			url: 'images/poppy.jpg',
-			alt: 'Poppy cat',
-			counter: '0'
+		incrementCounter: function() {
+			this.getCurrentPet().counter++;
 		},
-		{
-			name: 'William',
-			url: 'images/william.jpg',
-			alt: 'William cat',
-			counter: '0'
+		getPets: function() {//needs to return a JSON array of cats
+			return model.cats;
 		},
-		{
-			name: 'Sevi',
-			url: 'images/sevi.jpg',
-			alt: 'Sevi cat',
-			counter: '0'
+		init: function() {
+			listView.init();
 		}
-	]
-};
+	};
 
-var catIndex;
+	var listView = {
+		init: function() {
+			listView.render();
+		},
+		render: function() {
+			var cat;
+			var cats = octopus.getPets();
+			console.log(cats);
 
-function loadCat(index) {
-	var name = document.getElementById('cat-name');
-	var image = document.getElementById('cat-image');
-	var counter = document.getElementById('cat-counter');
-	var container = document.getElementById('image-container');
+			this.catList = $('#cat-list');
 
-	catIndex = index;
+			for(var i = 0; i < cats.length; i++) {
+				var catSelect = document.createElement('button');
+				cat = cats[i];
+				catSelect.textContent = cat.name;
+				catSelect.addEventListener('click', (function(catCopy) {
+			        return function() {
+			            octopus.setCurrentPet(catCopy);
+			        };
+			    })(cat));
+				this.catList.append(catSelect);
+			};
+		}
+	};
 
-	console.log('index: ' + index);
-	console.log('catIndex: ' + catIndex);
+	var imageView = {
+		display: false,
 
-	name.innerHTML = pets.cats[index].name;
-	image.src = pets.cats[index].url;
-	image.alt = 'Picture of ' + pets.cats[index].name;
-	counter.innerHTML = pets.cats[index].counter;
-}
+		init: function() {
+			this.name = document.getElementById('cat-name');
+			this.image = document.getElementById('cat-image');
+			this.counter = document.getElementById('cat-counter');
+			this.image.addEventListener('click', function() {
+				octopus.incrementCounter();
+				imageView.render();
+			});
+			imageView.render();
+		},
 
-document.getElementById('cat-image').addEventListener('click', function() {
-        imageClick(catIndex);
-    });
-
-function imageClick(index) {
-	console.log(index);
-	var counter = document.getElementById('cat-counter');
-	pets.cats[index].counter++;
-	counter.innerHTML = pets.cats[index].counter;	
-}
-
-function loadList() {
-	var HTMLlistOfCats = '<li class="cat-item" onClick="loadCat(%param%)">%name%</li>';
-	var allCats = '';
-	var list = document.getElementById('cat-list');
-	for(cat in pets.cats) {
-		var catItem = HTMLlistOfCats.replace('%name%', pets.cats[cat].name);
-		catItem = catItem.replace('%param%', cat);
-		allCats += catItem;
-	}
-	list.innerHTML = allCats;
-}
-
-document.body.onload = function() {
-	loadList ();
-};
-
+		render: function() {
+			this.pet = octopus.getCurrentPet();
+			this.name.innerHTML = this.pet.name;
+			this.image.src = this.pet.url;
+			this.image.alt = this.pet.alt;
+			this.counter.innerHTML = this.pet.counter;
+		}
+	};
+	octopus.init();
+});
