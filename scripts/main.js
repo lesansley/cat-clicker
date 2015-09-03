@@ -89,9 +89,10 @@ $(function() {
 			this.counter = document.getElementById('cat-counter');
 			this.image.addEventListener('click', function() {
 				octopus.incrementCounter();
-				imageView.render();
+				this.render();
 			});
-			imageView.render();
+			this.render();
+			formView.init();
 		},
 
 		render: function() {
@@ -102,5 +103,28 @@ $(function() {
 			this.counter.innerHTML = this.pet.counter;
 		}
 	};
+
+	var formView = {
+		status: 'hidden',
+
+		init: function() {
+			this.admin = document.getElementById('admin-btn');
+			console.log(this.admin);
+			this.change = document.getElementById('cat-details');
+			this.admin.addEventListener('click', function() {
+				formView.render();
+			});
+			console.log(this.change);
+		},
+
+		render: function() {
+			var data = new FormData(document.querySelector('form'));
+			this.change.style.visibility = 'visible';
+			this.change.addEventListener('submit', function(e) {
+				console.log(data);
+				e.preventDefault();
+			});
+		}
+	}
 	octopus.init();
 });
