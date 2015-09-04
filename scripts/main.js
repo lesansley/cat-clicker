@@ -89,7 +89,7 @@ $(function() {
 			this.counter = document.getElementById('cat-counter');
 			this.image.addEventListener('click', function() {
 				octopus.incrementCounter();
-				this.render();
+				imageView.render();
 			});
 			this.render();
 			formView.init();
@@ -109,19 +109,22 @@ $(function() {
 
 		init: function() {
 			this.admin = document.getElementById('admin-btn');
-			console.log(this.admin);
-			this.change = document.getElementById('cat-details');
+			this.name = document.getElementById('cat-form-name');
+			this.url = document.getElementById('cat-form-url');
+			this.counter = document.getElementById('cat-form-counter');
+			this.form = document.getElementById('cat-details');
+			this.admin.style.visibility = 'visible';
 			this.admin.addEventListener('click', function() {
 				formView.render();
 			});
-			console.log(this.change);
 		},
 
 		render: function() {
+			this.name.value = octopus.getCurrentPet().name;
+			this.form.style.visibility = 'visible';
+
 			var data = new FormData(document.querySelector('form'));
-			this.change.style.visibility = 'visible';
-			this.change.addEventListener('submit', function(e) {
-				console.log(data);
+			this.form.addEventListener('submit', function(e) {
 				e.preventDefault();
 			});
 		}
