@@ -52,6 +52,12 @@ $(function() {
 		},
 		init: function() {
 			listView.init();
+		},
+		changePet: function(name, url, count) {
+			if(name!=='') this.getCurrentPet().name = name;
+			if(url!=='') this.getCurrentPet().url = url;
+			if(count!=='') this.getCurrentPet().counter = count;
+			console.log(this.getCurrentPet());
 		}
 	};
 
@@ -62,9 +68,12 @@ $(function() {
 		render: function() {
 			var cat;
 			var cats = octopus.getPets();
-			console.log(cats);
 
-			this.catList = $('#cat-list');
+			this.catList = document.getElementById('cat-list');
+			while(this.catList.childNodes.length>0) {
+				this.catList.removeChild(this.catList.childNodes[0]);
+			}
+
 
 			for(var i = 0; i < cats.length; i++) {
 				var catSelect = document.createElement('button');
@@ -73,9 +82,12 @@ $(function() {
 				catSelect.addEventListener('click', (function(catCopy) {
 			        return function() {
 			            octopus.setCurrentPet(catCopy);
+			            formView.status = 'hidden';
+			            formView.render();
 			        };
 			    })(cat));
-				this.catList.append(catSelect);
+				this.catList.appendChild(catSelect);
+				console.log(this.catList.childNodes[0]);
 			};
 		}
 	};
@@ -90,6 +102,7 @@ $(function() {
 			this.image.addEventListener('click', function() {
 				octopus.incrementCounter();
 				imageView.render();
+				formView.render();
 			});
 			this.render();
 			formView.init();
@@ -115,18 +128,31 @@ $(function() {
 			this.form = document.getElementById('cat-details');
 			this.admin.style.visibility = 'visible';
 			this.admin.addEventListener('click', function() {
+				formView.status = 'visible';
+				console.log(formView.status);
 				formView.render();
+			});
+			this.form.addEventListener('submit', function(e) {
+				var newName = document.getElementById('cat-form-name').value;
+				var newUrl = document.getElementById('cat-form-url').value;
+				var newCount = document.getElementById('cat-form-counter').value;
+				octopus.changePet(newName, newUrl, newCount);
+				listView.render();
+				imageView.render();
+				formView.render();
+				e.preventDefault();
+			});
+			this.form.addEventListener('reset', function(e) {
+				formView.render();
+				e.preventDefault();
 			});
 		},
 
 		render: function() {
+			this.form.style.visibility = formView.status;
 			this.name.value = octopus.getCurrentPet().name;
-			this.form.style.visibility = 'visible';
-
-			var data = new FormData(document.querySelector('form'));
-			this.form.addEventListener('submit', function(e) {
-				e.preventDefault();
-			});
+			this.url.value = octopus.getCurrentPet().url;
+			this.counter.value = octopus.getCurrentPet().counter;
 		}
 	}
 	octopus.init();
